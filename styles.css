@@ -1,0 +1,78 @@
+/* ── Pinned Header ── */
+#gchat-pinned-section {
+  flex-shrink: 0;
+}
+
+.gchat-pinned-header {
+  color: #9aa0a6;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  padding: 10px 16px 4px;
+  user-select: none;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+}
+
+/* ── Divider between pinned and unpinned ── */
+#gchat-pinned-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.18);
+  margin: 28px 14px 24px 14px;
+  flex-shrink: 0;
+}
+
+/* ── Context Menu ── */
+#gchat-pin-context-menu {
+  position: fixed;
+  z-index: 2147483647;
+  background: #2d2e30;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  min-width: 160px;
+  padding: 4px 0;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  animation: gchat-menu-in 80ms ease-out;
+}
+
+@keyframes gchat-menu-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.gchat-pin-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  color: #e8eaed;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: nowrap;
+  transition: background 80ms;
+}
+
+.gchat-pin-menu-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.gchat-pin-menu-item.gchat-pin-menu-disabled {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+
+.gchat-pin-menu-separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.10);
+  margin: 4px 0;
+}
+
+.gchat-pin-menu-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  fill: #9aa0a6;
+}

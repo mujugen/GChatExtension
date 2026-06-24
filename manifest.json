@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Google Chat Pinned Chats",
+  "version": "1.0.0",
+  "description": "Pin specific chats to a persistent section at the top of Google Chat's sidebar.",
+  "host_permissions": ["https://chat.google.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://chat.google.com/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
