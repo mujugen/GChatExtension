@@ -60,21 +60,15 @@ No data leaves your browser. No permissions beyond `chat.google.com` are request
 
 ---
 
-## Contributing
-
-This project is intentionally small — a single content script (`content.js`) and stylesheet (`styles.css`). Contributions are welcome.
-
-```bash
-git clone https://github.com/your-username/gchat-pinned-chats
-```
-
-Load the folder as an unpacked extension in `chrome://extensions`, make your changes, and hit the refresh icon on the extension card to reload. Please open an issue before submitting large changes.
-
----
-
 ## Support
 
-If you'd like to support development, you can buy me a coffee at [https://ko-fi.com/mujugen](https://ko-fi.com/mujugen).
+If you'd like to support development, you can buy me a coffee on Ko-fi:
+
+<p align="center">
+  <a href="https://ko-fi.com/mujugen" target="_blank">
+    <img src="https://cdn.ko-fi.com/cdn/kofi5.png" alt="Buy me a coffee" height="60" />
+  </a>
+</p>
 
 ---
 
