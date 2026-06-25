@@ -1,8 +1,8 @@
 # Google Chat Pinned Chats
 
-A Chrome extension that pins important chats to a persistent **Pinned** section at the top of Google Chat's chat list — so they stay visible no matter how active other conversations get.
+A Chrome/Edge extension that pins important chats to a persistent **Pinned** section at the top of Google Chat's chat list, so they stay visible no matter how active other conversations get.
 
-![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-4285F4?logo=googlechrome&logoColor=white)
+![Chrome/Edge Extension](https://img.shields.io/badge/Chrome%2FEdge-Extension-4285F4?logo=googlechrome&logoColor=white)
 ![Manifest V3](https://img.shields.io/badge/Manifest-V3-34A853)
 ![License MIT](https://img.shields.io/badge/License-MIT-blue)
 
@@ -10,27 +10,27 @@ A Chrome extension that pins important chats to a persistent **Pinned** section 
 
 ## Features
 
-- **Pin any chat** — DMs, group spaces, or threads
-- **Persistent order** — pinned chats stay at the top even when Google Chat re-sorts the list on new messages
-- **Reorder without dragging** — right-click → Move Up / Move Down
-- **Survives everything** — page loads, full-screen mode, SPA navigations, and chat list rebuilds
-- **Zero data collection** — no network requests, no account access; pins are stored locally in your browser
+- **Pin any chat** - DMs, group spaces, or threads
+- **Persistent order** - pinned chats stay at the top even when Google Chat re-sorts the list on new messages
+- **Reorder without dragging** - right-click -> Move Up / Move Down
+- **Survives everything** - page loads, full-screen mode, SPA navigations, and chat list rebuilds
+- **Zero data collection** - no network requests, no account access; pinned conversation IDs are stored locally in your browser
 
 ---
 
 ## Installation
 
-### Chrome Web Store _(recommended)_
+### Chrome Web Store / Microsoft Edge Add-ons _(recommended)_
 
-[Add to Chrome →](#) _(link coming soon)_
+[Add to Chrome / Edge ->](#) _(link coming soon)_
 
 ### Manual (Developer Mode)
 
 1. Clone or download this repository
-2. Open Chrome and navigate to `chrome://extensions`
+2. Open Chrome at `chrome://extensions` or Edge at `edge://extensions`
 3. Enable **Developer mode** (toggle in the top-right)
 4. Click **Load unpacked** and select the project folder
-5. Open [Google Chat](https://chat.google.com) — the extension activates immediately
+5. Open [Google Chat](https://chat.google.com) - the extension activates immediately
 
 ---
 
@@ -38,12 +38,12 @@ A Chrome extension that pins important chats to a persistent **Pinned** section 
 
 | Action       | How                                                      |
 | ------------ | -------------------------------------------------------- |
-| Pin a chat   | Right-click any chat → **Pin chat**                      |
-| Unpin a chat | Right-click a pinned chat → **Unpin chat**               |
-| Reorder      | Right-click a pinned chat → **Move up** or **Move down** |
+| Pin a chat   | Right-click any chat -> **Pin chat**                     |
+| Unpin a chat | Right-click a pinned chat -> **Unpin chat**              |
+| Reorder      | Right-click a pinned chat -> **Move up** or **Move down** |
 | Close menu   | Press `Esc` or click anywhere outside                    |
 
-Pins are saved in `localStorage` and restored automatically on every visit.
+Pins are saved locally in your browser and restored automatically on every visit.
 
 ---
 
@@ -56,7 +56,11 @@ The extension runs as a Manifest V3 content script on `chat.google.com`. It:
 3. Watches for Google Chat's re-sorts via `MutationObserver` and restores order within milliseconds
 4. Maintains a 750ms watchdog as a safety net for SPA navigations and full-screen transitions
 
-No data leaves your browser. No permissions beyond `chat.google.com` are requested.
+No data leaves your browser. The extension runs only on `chat.google.com` and uses the `storage` permission to remember pinned chats locally.
+
+## Privacy
+
+See [PRIVACY.md](PRIVACY.md).
 
 ---
 
@@ -74,4 +78,4 @@ If you'd like to support development, you can buy me a coffee on Ko-fi:
 
 ## License
 
-MIT — see [LICENSE](LICENSE) for details.
+MIT - see [LICENSE](LICENSE) for details.

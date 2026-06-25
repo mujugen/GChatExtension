@@ -21,17 +21,46 @@
 
   // ── Storage ───────────────────────────────────────────────────────────────────
 
-  function loadPinned() {
+  function hasExtensionStorage() {
+    return typeof chrome !== 'undefined' && chrome.storage?.local;
+  }
+
+  function loadPinnedFromLocalStorage() {
     try {
       const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-      pinnedIds = new Set(
+      return new Set(
         Array.isArray(raw) ? raw.filter(id => typeof id === 'string' && CHAT_ID_RE.test(id)) : []
       );
-    } catch { pinnedIds = new Set(); }
+    } catch {
+      return new Set();
+    }
+  }
+
+  async function loadPinned() {
+    pinnedIds = loadPinnedFromLocalStorage();
+    if (!hasExtensionStorage()) return;
+
+    try {
+      const result = await chrome.storage.local.get(STORAGE_KEY);
+      const raw = result?.[STORAGE_KEY];
+      if (Array.isArray(raw)) {
+        pinnedIds = new Set(raw.filter(id => typeof id === 'string' && CHAT_ID_RE.test(id)));
+      } else if (pinnedIds.size > 0) {
+        await chrome.storage.local.set({ [STORAGE_KEY]: [...pinnedIds] });
+      }
+    } catch (e) {
+      console.warn('[gchat-pins] storage unavailable, using localStorage fallback', e);
+    }
   }
 
   function savePinned() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([...pinnedIds]));
+    const value = [...pinnedIds];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+    if (hasExtensionStorage()) {
+      chrome.storage.local.set({ [STORAGE_KEY]: value }).catch(e => {
+        console.warn('[gchat-pins] storage save failed', e);
+      });
+    }
   }
 
   // ── DOM helpers ───────────────────────────────────────────────────────────────
@@ -375,17 +404,28 @@
 
   // ── Context Menu ──────────────────────────────────────────────────────────────
 
-  const ICON = {
-    pin:  `<svg class="gchat-pin-menu-icon" viewBox="0 0 24 24"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>`,
-    up:   `<svg class="gchat-pin-menu-icon" viewBox="0 0 24 24"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/></svg>`,
-    down: `<svg class="gchat-pin-menu-icon" viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>`,
+  const ICON_PATH = {
+    pin: 'M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z',
+    up: 'M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z',
+    down: 'M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z',
   };
 
-  function makeMenuItem(icon, label, disabled, onClick) {
+  function makeIcon(name) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.classList.add('gchat-pin-menu-icon');
+    svg.setAttribute('viewBox', '0 0 24 24');
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', ICON_PATH[name]);
+    svg.appendChild(path);
+
+    return svg;
+  }
+
+  function makeMenuItem(iconName, label, disabled, onClick) {
     const item = document.createElement('div');
     item.className = 'gchat-pin-menu-item' + (disabled ? ' gchat-pin-menu-disabled' : '');
-    item.insertAdjacentHTML('beforeend', icon); // icon is a hardcoded SVG constant
-    item.append(label);                         // append(string) creates a safe text node
+    item.append(makeIcon(iconName), label);
     if (!disabled) item.addEventListener('mousedown', (e) => {
       e.preventDefault(); e.stopPropagation(); onClick(); closeMenu();
     });
@@ -402,15 +442,15 @@
     const menu     = document.createElement('div');
     menu.id = MENU_ID;
 
-    menu.appendChild(makeMenuItem(ICON.pin, isPinned ? 'Unpin chat' : 'Pin chat', false,
+    menu.appendChild(makeMenuItem('pin', isPinned ? 'Unpin chat' : 'Pin chat', false,
       () => isPinned ? unpin(spanId) : pin(spanId)));
 
     if (isPinned) {
       const sep = document.createElement('div');
       sep.className = 'gchat-pin-menu-separator';
       menu.appendChild(sep);
-      menu.appendChild(makeMenuItem(ICON.up,   'Move up',   idx === 0,              () => movePin(spanId, 'up')));
-      menu.appendChild(makeMenuItem(ICON.down, 'Move down', idx === arr.length - 1, () => movePin(spanId, 'down')));
+      menu.appendChild(makeMenuItem('up',   'Move up',   idx === 0,              () => movePin(spanId, 'up')));
+      menu.appendChild(makeMenuItem('down', 'Move down', idx === arr.length - 1, () => movePin(spanId, 'down')));
     }
 
     menu.style.cssText = `position:fixed;left:${x}px;top:${y}px;visibility:hidden`;
@@ -452,8 +492,8 @@
     setTimeout(apply, 500); // catch second render wave
   }
 
-  function boot() {
-    loadPinned();
+  async function boot() {
+    await loadPinned();
     attachListeners();
     startWatchdog(); // always runs, independent safety net
 
