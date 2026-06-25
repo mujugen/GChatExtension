@@ -72,6 +72,12 @@ Load the folder as an unpacked extension in `chrome://extensions`, make your cha
 
 ---
 
+## Support
+
+If you'd like to support development, you can buy me a coffee at [https://ko-fi.com/mujugen](https://ko-fi.com/mujugen).
+
+---
+
 ## License
 
 MIT — see [LICENSE](LICENSE) for details.
