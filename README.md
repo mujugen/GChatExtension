@@ -36,12 +36,12 @@ A Chrome/Edge extension that pins important chats to a persistent **Pinned** sec
 
 ## Usage
 
-| Action       | How                                                      |
-| ------------ | -------------------------------------------------------- |
-| Pin a chat   | Right-click any chat -> **Pin chat**                     |
-| Unpin a chat | Right-click a pinned chat -> **Unpin chat**              |
+| Action       | How                                                       |
+| ------------ | --------------------------------------------------------- |
+| Pin a chat   | Right-click any chat -> **Pin chat**                      |
+| Unpin a chat | Right-click a pinned chat -> **Unpin chat**               |
 | Reorder      | Right-click a pinned chat -> **Move up** or **Move down** |
-| Close menu   | Press `Esc` or click anywhere outside                    |
+| Close menu   | Press `Esc` or click anywhere outside                     |
 
 Pins are saved locally in your browser and restored automatically on every visit.
 
