@@ -64,7 +64,7 @@ No data leaves your browser. No permissions beyond `chat.google.com` are request
 
 If you'd like to support development, you can buy me a coffee on Ko-fi:
 
-<p align="center">
+<p align="start">
   <a href="https://ko-fi.com/mujugen" target="_blank">
     <img src="https://cdn.ko-fi.com/cdn/kofi5.png" alt="Buy me a coffee" height="60" />
   </a>
